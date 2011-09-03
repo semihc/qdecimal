@@ -864,7 +864,7 @@ int QDecNumberTests::opTest(const QStringList& tokens)
              << "e=" << e.toString()
              << "prc=" << oc.digits()
              << "ctx=" << (oc.status() ? oc.statusToString() : 0)
-             << (is_rs_used ?  res + "|" + rs : 0);
+             << (is_rs_used ?  res + "|" + rs : (const char*)0);
         
     
     displayDirectivesContext();
