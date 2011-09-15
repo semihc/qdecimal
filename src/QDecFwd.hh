@@ -12,7 +12,7 @@
  *
  */
 
-// Work with up to 34 digits
+// Work with up to 34 digits as default
 #ifndef DECNUMDIGITS
 # define DECNUMDIGITS 34
 #endif
