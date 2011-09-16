@@ -4,6 +4,7 @@
 #DEFINES += DECNUMDIGITS=34  # default is 34 
 #DEFINES += DECSUBSET=0      # default is 0
 #DEFINES += DECEXTFLAG=1     # default is 1
+#DEFINES += DECLITEND=0     # default is 1
 
 if(win32) {
  INCLUDEPATH += .
