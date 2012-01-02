@@ -12,9 +12,9 @@
  *
  */
 
-// Work with up to 34 digits as default
+// Work with up to 177 digits as default,
 #ifndef DECNUMDIGITS
-# define DECNUMDIGITS 34
+# define DECNUMDIGITS 177
 #endif
 
 const int QDecNumDigits = DECNUMDIGITS;

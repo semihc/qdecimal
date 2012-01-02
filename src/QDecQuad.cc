@@ -28,6 +28,21 @@ QDecQuad& QDecQuad::fromDouble(double d)
   return fromString(str);
 }
 
+
+QDecQuad& QDecQuad::fromHexString(const char* str)
+{
+  QByteArray ba = QByteArray::fromHex(str);
+  int size = sizeof(m_data);
+  char* p = (char*)&m_data;
+  int i = 0;
+  int j = size-1;
+  for(; i<size; i++,j--)
+    p[j] = ba.at(i);
+
+  return *this;
+}
+
+
 QDecQuad& QDecQuad::fromQDecDouble(const QDecDouble& d)
 {
   decDoubleToWider(d.data(), &m_data);

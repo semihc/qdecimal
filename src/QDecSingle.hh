@@ -103,6 +103,9 @@ class QDecSingle
     return *this; 
   }
 
+  //! Hexadecimal string in network byte order
+  QDecSingle& fromHexString(const char* str);
+
   QDecSingle& fromQDecDouble(const QDecDouble& d, QDecContext* c = 0)
   { return fromWider(d,c); }
   

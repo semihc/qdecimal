@@ -14,6 +14,7 @@
 #include <QtGlobal>
 #include <QByteArray>
 #include <QTextStream>
+#include "QDecFwd.hh"
 
 using namespace std;
 
@@ -37,7 +38,10 @@ QDecContext::QDecContext(int32_t kind)
 
   // No SIGFPE trap is allowed by default
   // as this will disrupt most calculations.
-  m_data.traps = 0; 
+  m_data.traps = 0;
+
+  // By default allow maximum allowable precision
+  setDigits(QDecNumDigits);
 }
 
 
@@ -110,3 +114,18 @@ void QDecContext::setExtended(uint8_t ext)
 }
 
 
+QTextStream& operator<<(QTextStream& ts, const QDecContext ctx)
+{
+  char c = ' ';
+  ts << "digits=" << ctx.digits()
+     << c << "emax=" << ctx.emax()
+     << c << "emin=" << ctx.emin()
+     << c << "extended=" << ctx.extended()
+     << c << "clamp=" << ctx.clamp()
+     << c << "round=" << ctx.round()
+     << c << "traps=" << ctx.traps()
+     << c << "status=" << ctx.status()
+     << c << ctx.statusToString();
+  
+  return ts;
+}

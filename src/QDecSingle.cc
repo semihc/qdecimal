@@ -28,6 +28,20 @@ QDecSingle& QDecSingle::fromDouble(double d)
   return fromString(str);
 }
 
+QDecSingle& QDecSingle::fromHexString(const char* str)
+{
+  QByteArray ba = QByteArray::fromHex(str);
+  int size = sizeof(m_data);
+  char* p = (char*)&m_data;
+  int i = 0;
+  int j = size-1;
+  for(; i<size; i++,j--)
+    p[j] = ba.at(i);
+
+  return *this;
+}
+
+
 QDecSingle& QDecSingle::fromQDecNumber(const QDecNumber& n, QDecContext* c)
 {
   decSingleFromNumber(&m_data, n.data(), CXT(c));

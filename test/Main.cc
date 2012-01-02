@@ -11,10 +11,32 @@
 #endif
 
 
+
+void MessageOutput(QtMsgType type, const char *msg)
+{
+  switch (type) {
+    case QtDebugMsg:
+      fprintf(stderr, "%s\n", msg);
+      break;
+    case QtWarningMsg:
+      fprintf(stderr, "Warn: %s\n", msg);
+      break;
+    case QtCriticalMsg:
+      fprintf(stderr, "Critical: %s\n", msg);
+      break;
+    case QtFatalMsg:
+      fprintf(stderr, "Fatal: %s\n", msg);
+      abort();
+  }
+}
+
+
+
 //QTEST_MAIN(QDecNumberTests) 
 
 int main(int argc, char* argv[])
 {
+  qInstallMsgHandler(MessageOutput);
   QCoreApplication app(argc, argv);
   QStringList args = QCoreApplication::arguments();
 

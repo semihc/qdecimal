@@ -61,7 +61,7 @@
 
   /* Conditional code flag -- set this to 0 for best performance      */
   #if !defined(DECSUBSET)
-  #define DECSUBSET  0             /* 1=enable subset arithmetic      */
+  #define DECSUBSET  1             /* 1=enable subset arithmetic      */
   #endif
 
   /* Context for operations, with associated constants                */

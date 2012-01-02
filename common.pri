@@ -6,6 +6,8 @@
 #DEFINES += DECEXTFLAG=1     # default is 1
 #DEFINES += DECLITEND=0     # default is 1
 
+CONFIG += debug
+
 if(win32) {
  INCLUDEPATH += .
  # Remove Qt's defaults

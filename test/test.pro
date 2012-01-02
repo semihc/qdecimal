@@ -11,7 +11,7 @@ TARGET = qdecimal_test
 DESTDIR = ../bin
 DEPENDPATH += .
 INCLUDEPATH += ../decnumber ../src
-LIBS += -L../lib -ldecnumber -lqdecimal
+LIBS += -L../lib -lqdecimal -ldecnumber
 
 # Input
 HEADERS += QDecNumberTests.hh

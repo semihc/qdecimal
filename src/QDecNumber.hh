@@ -110,7 +110,7 @@ public:
       
   QByteArray toEngString() const {
     char str[MaxStrSize] = { 0 };
-    return decNumberToString(&m_data, str);
+    return decNumberToEngString(&m_data, str);
   }
 
   QByteArray toString() const {
@@ -127,7 +127,6 @@ public:
   
   // COMPUTATIONAL FUNCTIONS
   QDecNumber abs(QDecContext* c = 0) const
-      //{ return decNumberAbs(&decNumber(), &m_data, CXT(c)); }
   { decNumber n; return decNumberAbs(&n, &m_data, CXT(c)); }
 
   QDecNumber add(const QDecNumber& o, QDecContext* c = 0) const

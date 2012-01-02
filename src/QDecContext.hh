@@ -18,9 +18,15 @@ extern "C" {
 
 // FORWARDS
 class QByteArray;
+class QTextStream;
 
 //! Default context type or kind
 const int QDecContextDefKind = DEC_INIT_BASE;
+
+//! Maximum precision allowed in precision (digits) field
+const int32_t QDecMaxPrecision =  999999999;
+const int32_t QDecMaxExponent  =  999999999;
+const int32_t QDecMinExponent  = -999999999;
 
 /**
    
@@ -150,9 +156,10 @@ class QDecContext
   { return decContextTestSavedStatus(status, mask); }
   
 
-
-
 }; // end class
+
+
+QTextStream& operator<<(QTextStream& ts, const QDecContext);
 
 // Convience macro to extract decContext structure or
 // create one on stack to comply with callee signature.

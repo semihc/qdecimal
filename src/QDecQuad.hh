@@ -106,6 +106,9 @@ class QDecQuad
   QDecQuad& fromString(const char* str, QDecContext* c = 0)
   { decQuadFromString(&m_data, str, CXT(c)); return *this; }
 
+  //! Hexadecimal string in network byte order
+  QDecQuad& fromHexString(const char* str);
+  
   QDecQuad& fromQDecDouble(const QDecDouble& d);
 
   QDecQuad& fromQDecNumber(const QDecNumber& n, QDecContext* c = 0);

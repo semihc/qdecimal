@@ -4,6 +4,10 @@
 
 #include "QDecContext.hh"
 #include "QDecNumber.hh"
+#include "QDecSingle.hh"
+#include "QDecDouble.hh"
+#include "QDecQuad.hh"
+#include "QDecPacked.hh"
 
 extern "C" {
 #include "decimal64.h"
@@ -25,6 +29,18 @@ using namespace std;
 #elif defined(_WIN32)
 # pragma comment( user, __FILE__ " " __DATE__ " " __TIME__ "$Id$" )
 #endif
+
+
+QDebug operator<<(QDebug dbg, const QDecContext& c)
+{
+  QString cstr;
+  {
+    QTextStream ts(&cstr);
+    ts << c;
+  }
+  dbg.nospace() << cstr;
+  return dbg.space();
+}
 
 
 QDecNumberTests::QDecNumberTests(const QStringList& args)
@@ -238,7 +254,8 @@ void QDecNumberTests::QDecNumber_abs()
 
   QVERIFY(dcn.fromString("1").abs(&cxt).toString() == "1");
   QVERIFY(dcn.fromString("-1").abs(&cxt).toString() == "1");
-  QVERIFY(dcn.fromString("0.00").abs(&cxt).toString() == "0.00");
+  //qDebug() << "abs:" << dcn.fromString("0.00").abs(&cxt).toString();
+  QVERIFY(dcn.fromString("0.00").abs(&cxt).toString() == "0");
   QVERIFY(dcn.fromString("-101.5").abs(&cxt).toString() == "101.5");
   
   cxt.setDigits(9);
@@ -271,6 +288,24 @@ void QDecNumberTests::QDecNumber_add()
 
 }
 
+void QDecNumberTests::QDecimal_size()
+{
+  qDebug() << "sizeof(QDecContext)" << sizeof(QDecContext);
+  QVERIFY(sizeof(decContext) == sizeof(QDecContext));
+
+  qDebug() << "sizeof(QDecPacked)" << sizeof(QDecPacked);
+
+  qDebug() << "QDecNumDigits=" << QDecNumDigits;
+  qDebug() << "sizeof(QDecNumber)" << sizeof(QDecNumber);
+
+  qDebug() << "sizeof(QDecSingle)" << sizeof(QDecSingle);
+  QVERIFY(sizeof(QDecSingle)==4);
+  qDebug() << "sizeof(QDecDouble)" << sizeof(QDecDouble);
+  QVERIFY(sizeof(QDecDouble)==8);
+  qDebug() << "sizeof(QDecQuad)" << sizeof(QDecQuad);
+  QVERIFY(sizeof(QDecQuad)==16);
+  
+}
 
 //
 //--------------------------------------
@@ -299,12 +334,14 @@ void QDecNumberTests::procTestFile(const QString& filename)
   clearDirectivesContext();
   
   int rv ;
+  QByteArray line;
   QStringList tokens;
   QStringListIterator si(m_testLines);
   QDecContext context;
   
   while(si.hasNext()) {
-    rv = procTestLine(si.next(), tokens);
+    QString line = si.next();
+    rv = procTestLine(line , tokens);
     switch(rv) {
       case TC_unknown:
       case TC_ignore:
@@ -315,7 +352,16 @@ void QDecNumberTests::procTestFile(const QString& filename)
         break;
 
       case TC_test:
-        runTestCase(tokens, context);
+        qDebug() << "TESTCASE: " << line.trimmed();
+        if(context.digits() > QDecNumDigits) {
+          // Skip testcase if precision required is higher than
+          // QDecNumber can accommodate.
+          qDebug() << "SKIP: " << line.trimmed();
+        }
+        else {
+          // No precision issue, run the test case
+          runTestCase(tokens, context);
+        }
         break;
     }
   } // end while
@@ -364,13 +410,14 @@ int QDecNumberTests::procTestLine(const QString& line,
   }
   else if(re_testop.exactMatch(ln)) {
     // Unary/Binary test operation tokens
-    QRegExp tot("^\\s*(\\S+)\\s+(\\S+)\\s+(\\S+|'[^']*')\\s*(\\S*)\\s*(\\S*)\\s*->\\s*(\\S+)\\s*(.*)");
+    QRegExp tot("^\\s*(\\S+)\\s+(\\S+)\\s+(\\S+)\\s*(\\S*)\\s*(\\S*)\\s*->\\s*(\\S+)\\s*(.*)");
     if(tot.exactMatch(ln)) {
       QString id = tot.cap(1).simplified();
       QString op = tot.cap(2).simplified();
-      QString opd1 = tot.cap(3).simplified();
-      QString opd2 = tot.cap(4).simplified();
-      QString opd3 = tot.cap(5).simplified();
+      // Don't trim whitespace from tokens
+      QString opd1 = tot.cap(3); //.simplified();
+      QString opd2 = tot.cap(4); //.simplified();
+      QString opd3 = tot.cap(5); //.simplified();
       QString res = tot.cap(6).simplified();
       QString cond = tot.cap(7).simplified();
       tokens << id << op << opd1 << opd2 << opd3 << res << cond;
@@ -400,32 +447,22 @@ int QDecNumberTests::applyTestDirective(const QStringList& tokens, QDecContext& 
   int rv = -1; // Return value error by default
 
   // Flags required to construct context object
-  int32_t kind;
   bool ok;
 
+  // Clear any status value left before
+  ctx.zeroStatus();
+  
   //
   // Mandatory directives
   //
   if(!key.compare("precision")) {
     // No operation to be done on context
     unsigned pval = val.toUInt(&ok);
-    if(pval <= 7)
-      kind = DEC_INIT_DECIMAL32;
-    else if(pval <= 9)
-      kind = DEC_INIT_BASE;
-    else if(pval <= 16)
-      kind = DEC_INIT_DECIMAL64;
-    else
-      kind = DEC_INIT_DECIMAL128; // Up to 34 digits
-
     // Check if conversion is ok
     if(ok) {
       rv = 0;
-      //QDecContext c(kind);
-      QDecContext c(DEC_INIT_DECIMAL128);
-      if(pval <= DECNUMDIGITS)
-        c.setDigits(pval);
-      ctx = c;
+      if(pval < (unsigned)QDecNumDigits)
+        ctx.setDigits(pval);
     }
     else {
       qWarning() << "Precison value conversion failed: " << val;
@@ -463,7 +500,7 @@ int QDecNumberTests::applyTestDirective(const QStringList& tokens, QDecContext& 
     }
   }
   else if(!key.compare("maxexponent")) {
-    int32_t emax = val.toInt(&ok);
+    int32_t emax = (int32_t) val.toInt(&ok, 10);
     if(ok) {
       rv = 0;
       ctx.setEmax(emax);
@@ -473,7 +510,7 @@ int QDecNumberTests::applyTestDirective(const QStringList& tokens, QDecContext& 
     }
   }
   else if(!key.compare("minexponent")) {
-    int32_t emin = val.toInt(&ok);
+    int32_t emin = (int32_t) val.toInt(&ok, 10);
     if(ok) {
       rv = 0;
       ctx.setEmin(emin);
@@ -519,11 +556,15 @@ int QDecNumberTests::applyTestDirective(const QStringList& tokens, QDecContext& 
   // Check if keyword/value pair is recognized
   if(rv != 0)
     qWarning() << "Unknown keyword " << key;
-  else
+  else {
     m_curDirectives.insert(key, val);
+    //qDebug() << "directive=" << key << " val=" << val;
+  }
 
+  //qDebug() << "ctx=" << ctx;
   return rv;
 }
+
 
 
 int QDecNumberTests::getDirectivesContext(QDecContext& ctx, bool precision)
@@ -533,15 +574,25 @@ int QDecNumberTests::getDirectivesContext(QDecContext& ctx, bool precision)
   
   while(i.hasNext()) {
     i.next();
-    if(!precision && i.key() == "precision")
-      continue; // Ignore precison directive if not wanted
+    if(!precision) {
+      if(i.key() == "precision")
+        continue; // Ignore precison directives if not wanted
+    }
     tokens.clear();
     tokens << i.key() << i.value();
     applyTestDirective(tokens, ctx);
   }
 
+  // If precision is not wanted, pick largest exponent values
+  // to avoid rounding
+  if(!precision) {
+    ctx.setEmax(QDecMaxExponent); 
+    ctx.setEmin(QDecMinExponent); 
+  }
+
   if(ctx.status())
     qWarning() << "getDirectivesContext ctx=" << ctx.statusToString();
+  //qDebug() << "getDirectivesContext ctx=" << ctx;
   
   return 0;
 }
@@ -570,10 +621,10 @@ inline bool is_unary_op(QString op)
       << "abs"
       << "apply"
       << "class"
+      << "canonical"
       << "copy"
       << "copyabs"
       << "copynegate"
-      << "copysign"
       << "exp"
       << "invert"
       << "ln"
@@ -607,6 +658,7 @@ inline bool is_binary_op(QString op)
       << "comparetotal"
       << "comparetotalmag"
       << "comparetotmag"
+      << "copysign"
       << "divide"
       << "divideint"
       << "max"
@@ -654,19 +706,24 @@ inline QDecNumber op_do(QString op,
     return n1.abs(&c);
   if("apply" == op)
     return n1.plus(&c);
+  // canonical is similar to apply
+  if("canonical" == op)
+    return n1.plus(&c);
   if("class" == op) {
     enum decClass dc = n1.toClass(&c);
     rs = n1.ClassToString(dc);
     return n1;
   }
-  if("copy" == op)
-    return n1.copy(n2);
+  // Copy operation modifies the callee, thus operation
+  // is done on unused operand
+  if("copy" == op) 
+    return n2.copy(n1);
   if("copyabs" == op)
-    return n1.copyAbs(n2);
+    return n2.copyAbs(n1);
   if("copynegate" == op)
-    return n1.copyNegate(n2);
+    return n2.copyNegate(n1);
   if("copysign" == op)
-    return n1.copySign(n1,n2);
+    return n3.copySign(n1,n2);
   if("exp" == op)
     return n1.exp(&c);
   if("invert" == op)
@@ -711,7 +768,6 @@ inline QDecNumber op_do(QString op,
     return n1.add(n2, &c);
   if("and" == op)
     return n1.digitAnd(n2, &c);
-  //canonical?
   if("compare" == op)
     return n1.compare(n2, &c);
   if("comparesig" == op)
@@ -794,12 +850,25 @@ int QDecNumberTests::opTest(const QStringList& tokens)
   QDecContext oc(DEC_INIT_DECIMAL128);
   QString rs; // Result String
   bool op_precision_needed = false;
-  bool is_rs_used = false;
+  bool is_rs_used = false; // Is result string used?
 
+
+  // Skip a testcase with # as any of the operands
+  for(int i=2; i<=4; i++)
+    if(QString('#')==tokens.at(i)) {
+      qDebug() << "SKIP: " << tokens.join(",");
+      return 0;
+    }
+  
+  // Expected result will get maximum allowable precision
+  cc.setEmax(QDecMaxExponent); 
+  cc.setEmin(QDecMinExponent); 
   // Expected result should not be affected by current context
-  if(res != "?")
+  if(res != "?") {
     ret = token2QDecNumber(res, cc, e); // Expected result
-  cc.setStatus(); // Clear status flag for next operation
+    qDebug() << "cc: " << cc;
+  }
+  cc.zeroStatus(); // Clear status flag for next operation
   
   // Apply current context to operands now
   if(op=="tosci" ||
@@ -812,15 +881,16 @@ int QDecNumberTests::opTest(const QStringList& tokens)
   getDirectivesContext(cc, op_precision_needed);
 
   ret = token2QDecNumber(opd1, cc, n1);
-  cc.setStatus(); // Clear status flag for next operation
+  cc.zeroStatus(); // Clear status flag for next operation
 
-  if(is_binary_op(op)) {
+  if(is_binary_op(op) ||
+     is_ternary_op(op)) {
     ret = token2QDecNumber(opd2, cc, n2);
-    cc.setStatus();
+    cc.zeroStatus();
   }
   if(is_ternary_op(op)) {
     ret = token2QDecNumber(opd3, cc, n3);
-    cc.setStatus();
+    cc.zeroStatus();
   }
 
   // Get context directives including precision
@@ -853,20 +923,33 @@ int QDecNumberTests::opTest(const QStringList& tokens)
   }    
   if(ret) {
     qDebug() << "PASS: " << tokens.join(",");
+    /* Uncomment to receive more information about passing test cases: */
+    qDebug() << "n1=" << n1.toString().data()
+             << "n2=" << n2.toString().data()
+             << "r="
+             << (is_rs_used ? rs.toAscii().data() : r.toString().data())
+             << "e=" << e.toString().data()
+             << "prc=" << oc.digits()
+             << "ctx=" << (oc.status() ? oc.statusToString() : 0)
+             << (is_rs_used ?  res + "|" + rs : (const char*)0);
+
     return 0; // Success
   }
   else {
     qDebug() << "FAIL: " << tokens.join(",");
-    qDebug() << "n1=" << n1.toString()
-             << "n2=" << n2.toString()
+    qDebug() << "n1=" << n1.toString().data()
+             << "n2=" << n2.toString().data()
+             << "n3=" << n3.toString().data()
              << "r="
              << (is_rs_used ? rs.toAscii().data() : r.toString().data())
-             << "e=" << e.toString()
+             << "e=" << e.toString().data()
              << "prc=" << oc.digits()
              << "ctx=" << (oc.status() ? oc.statusToString() : 0)
              << (is_rs_used ?  res + "|" + rs : (const char*)0);
-        
-    
+
+    // Print out operation context
+    qDebug() << "oc: " << oc;
+    // Print out prevailing context settings
     displayDirectivesContext();
     // Uncomment this if you want to stop the test cases after failure
     //qFatal("End");                    
@@ -876,7 +959,7 @@ int QDecNumberTests::opTest(const QStringList& tokens)
   return 0;
 }
 
-int QDecNumberTests::runTestCase(const QStringList& tokens, const QDecContext& ctx)
+int QDecNumberTests::runTestCase(const QStringList& tokens, const QDecContext& /* ctx */)
 {
   if(tokens.size() != 7) {
     qWarning() << "Invalid number of tokens: " << tokens.join(",");
@@ -899,9 +982,90 @@ int QDecNumberTests::runTestCase(const QStringList& tokens, const QDecContext& c
 bool QDecNumberTests::token2QDecNumber(const QString& token, const QDecContext& ctx, QDecNumber& num)
 {
   QString tt = token;
-  tt.remove(QChar('\''));
-  tt.remove(QChar('\"'));
+  // Deal with quotes, double quotes and escaped quotes
+  if(tt.contains("''")) {
+    tt.replace("''","'");
+    tt = tt.remove(0,1);
+    tt.chop(1);
+  }
+  else
+    tt.remove(QChar('\''));
 
+  if(tt.contains("\"\"")) {
+    tt.replace("\"\"","\"");
+    tt = tt.remove(0,1);
+    tt.chop(1);   
+  }
+  else
+    tt.remove(QChar('\"'));
+
+  if(token.contains('#')) {
+    QRegExp expl("#([0-9a-fA-F]+)"); // explicit notation
+    QRegExp altn("([0-9]+)#(.+)"); // alternative notation
+
+    if(expl.exactMatch(token)) {
+      QString hexval = expl.cap(1); // get hex value
+      switch(hexval.size()) {
+        case 8: {
+          QDecSingle ds;
+          ds.fromHexString(hexval.toAscii().data());
+          num = ds.toQDecNumber();
+          return true;
+          }      
+        case 16: {
+          QDecDouble dd;
+          dd.fromHexString(hexval.toAscii().data());
+          num = dd.toQDecNumber();
+          return true;
+        }
+        case 32: {
+          QDecQuad dq;
+          dq.fromHexString(hexval.toAscii().data());
+          num = dq.toQDecNumber();
+          return true;
+        }
+      } // end switch
+    } // expl.
+
+    if(altn.exactMatch(token)) {
+      QString fmt = altn.cap(1); // get format size
+      QString val = altn.cap(2); // get number value in string
+
+      uint fmtsize = fmt.toUInt();
+      switch(fmtsize) {
+        case 32: {
+          qDebug() << "fmt=" << fmt << "val=" << val;
+          QDecSingle ds(val.toAscii().data());
+          num = ds.toQDecNumber();
+          return true;
+        }
+
+        case 64: {
+          qDebug() << "fmt=" << fmt << "val=" << val;
+          QDecDouble dd(val.toAscii().data());
+          num = dd.toQDecNumber();
+          return true;
+        }
+
+        case 128: {
+          qDebug() << "fmt=" << fmt << "val=" << val;
+          QDecQuad dq(val.toAscii().data());
+          num = dq.toQDecNumber();
+          return true;
+        }
+
+      } // end switch
+
+    } // altn.
+
+    
+    // '#' in a token by itself
+    num.fromString("NaN");
+    return true;
+      
+  } // contains #
+  
+  //qDebug() << "ctx=" << ctx;
   QDecContext c(ctx);
 
   QDecNumber tnum;
@@ -913,7 +1077,11 @@ bool QDecNumberTests::token2QDecNumber(const QString& token, const QDecContext& 
     qDebug() << "token2QDecNumber "
              << "tkn=" << token
              << "ctx=" << c.statusToString()
-             << c.statusFlags();
+             << c.statusFlags()
+             << "val=" << tnum.toString();
+
+    qDebug() << "c=" << c;
+
   }
   
   
@@ -933,8 +1101,8 @@ void QDecNumberTests::test_cases()
   QString prjdir = cwd + "/../test/";
   // Check if user specified a test case directory
   QString tdir = m_argsMap.value("testdir",
-                                 "tc_subset");
-                                 //"tc_full"); 
+                                 //"tc_subset");
+                                 "tc_full"); 
   tdir = prjdir + tdir;
   QString tfile = m_argsMap.value("testfile");
   QString tffilter = m_argsMap.value("testfilefilter");
@@ -988,25 +1156,4 @@ void QDecNumberTests::test_cases()
     qWarning() << "Unknown exception" ;
   }
 }
-
-#if 0
-void QDecNumberTests::toUpper_data()
-{
-     QTest::addColumn<QString>("string");
-     QTest::addColumn<QString>("result");
-
-     QTest::newRow("all lower") << "hello" << "HELLO";
-     QTest::newRow("mixed")     << "Hello" << "HELLO";
-     QTest::newRow("all upper") << "HELLO" << "HELLO";
-}
-
-void QDecNumberTests::toUpper()
-{
-     QFETCH(QString, string);
-     QFETCH(QString, result);
-
-     QCOMPARE(string.toUpper(), result);
-}
-#endif 
-
 

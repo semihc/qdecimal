@@ -42,8 +42,7 @@ class QDecNumberTests: public QObject
   void QDecContext_tests();
   void QDecNumber_abs();
   void QDecNumber_add();
-  //void toUpper_data();
-  //void toUpper();
+  void QDecimal_size();
   void test_cases();
 
  private:  
