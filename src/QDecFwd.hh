@@ -12,9 +12,10 @@
  *
  */
 
-// Work with up to 177 digits as default,
+// Work with up to 80 digits as default, resulting in 64 bytes
+// decNumber structure.
 #ifndef DECNUMDIGITS
-# define DECNUMDIGITS 177
+# define DECNUMDIGITS 80
 #endif
 
 const int QDecNumDigits = DECNUMDIGITS;

@@ -9,6 +9,7 @@
 #include <QString>
 #include <QStringList>
 #include <QMap>
+#include <QSet>
 
 
 // FORWARDS
@@ -69,6 +70,9 @@ class QDecNumberTests: public QObject
 
   // Map of arguments
   QMap<QString, QString> m_argsMap;
+
+  // Set of test cases to be skipped
+  QSet<QString> m_skipSet;
 
 };
 

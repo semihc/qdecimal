@@ -20,8 +20,14 @@ extern "C" {
 class QByteArray;
 class QTextStream;
 
-//! Default context type or kind
+/*! Default context type or kind, should be set to one of these:
+ * DEC_INIT_BASE
+ * DEC_INIT_DECIMAL32
+ * DEC_INIT_DECIMAL64
+ * DEC_INIT_DECIMAL128
+ */
 const int QDecContextDefKind = DEC_INIT_BASE;
+
 
 //! Maximum precision allowed in precision (digits) field
 const int32_t QDecMaxPrecision =  999999999;
