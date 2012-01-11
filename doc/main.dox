@@ -1,0 +1,20 @@
+/*
+  This file contains NO source code, just some documentation for doxygen to
+  parse.
+  (c) Semih Cemiloglu
+*/
+
+/*!
+  \mainpage QDecimal - Decimal Arithmetic Library for Qt Framework
+
+The decNumber library implements the General Decimal Arithmetic Specification[1]  in ANSI C. This specification defines a decimal arithmetic which meets the requirements of commercial, financial, and human-oriented applications. It also matches the decimal arithmetic in the IEEE 754 Standard for Floating Point Arithmetic.
+
+The library fully implements the specification, and hence supports integer, fixed-point, and floating-point decimal numbers directly, including infinite, NaN (Not a Number), and subnormal values. Both arbitrary-precision and fixed-size representations are supported.
+
+
+Most computers today support binary floating-point in hardware. While suitable for many purposes, binary floating-point arithmetic should not be used for financial, commercial, and user-centric applications or web services because the decimal data used in these applications cannot be represented exactly using binary floating-point. (See the Frequently Asked Questions pages for an explanation of this, and several examples.)
+
+The problems of binary floating-point can be avoided by using base 10 (decimal) exponents and preserving those exponents where possible. This site describes a decimal arithmetic which achieves the necessary results and is suitable for both hardware and software implementation. It brings together the relevant concepts from a number of ANSI, IEEE, ECMA, and ISO standards, and conforms to the decimal formats and arithmetic in the IEEE 754 standard (‘754-2008’) published by the IEEE in August 2008, and the  ISO/IEC/IEEE 60559:2011 standard, published by ISO in July 2011.
+
+
+*/
