@@ -1,0 +1,10 @@
+
+Unix
+~~~~
+qmake -r
+make
+
+Windows
+~~~~~~~
+qmake -r
+nmake
