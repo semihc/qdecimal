@@ -27,13 +27,19 @@ class QTextStream;
 QT_END_NAMESPACE
 
 
-/**
- *
- *
+/*!
+  QDecDouble encapsulates decDouble and provides decNumber library
+  functions that operates upon decSingle as member functions with the same name.
+  decimal64 is a 64-bit decimal floating-point representation which
+  provides 16 decimal digits of precision in a compressed format.
+  decDouble module provides the functions for the decimal64 format;
+  this format is an IEEE 754 basic format and so a full set of arithmetic
+  and other functions is included.
  */
 class QDecDouble
 {
   // MEMBERS
+  //! Embedded decDouble structure
   decDouble m_data;
 
  public:
@@ -177,6 +183,7 @@ class QDecDouble
 
  
   // COMPUTATIONAL
+  //! Returns the absolute value
   QDecDouble abs(QDecContext* c = 0) const
   { decDouble d; return decDoubleAbs(&d, &m_data, CXT(c)); }
 

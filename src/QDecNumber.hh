@@ -24,13 +24,21 @@ class QTextStream;
 QT_END_NAMESPACE
 
 
-/**
- *
- *
+/*!
+  QDecNumber encapsulates decNumber and reimplements global functions
+  that operates upon decNumber as member functions with the same name.
+  decNumber module uses an arbitrary-precision decimal number representation
+  designed for efficient computation in software and implements the
+  arithmetic and logical operations, together with a number of conversions
+  and utilities. Once a number is held as a decNumber, no further conversions
+  are necessary to carry out arithmetic.
+  The decNumber representation is variable-length and machine-dependent
+  (for example, it contains integers which may be big-endian or little-endian).
  */
 class QDecNumber
 {
   // MEMBERS
+  //! Embedded decNumber structure
   decNumber m_data;
   
 public:

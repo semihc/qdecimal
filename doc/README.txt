@@ -80,6 +80,7 @@ Read INSTALL.txt to build and install QDecimal.
 Copyright
 ~~~~~~~~~
 Copyright (C) 2012 Semih Cemiloglu
+Copyright (c) IBM Corporation, 2000, 2010.  All rights reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -91,11 +92,15 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details (COPYRIGHT.txt).
 
+The decNumber library has separate license terms, which is governed by
+ICU License -- ICU 1.8.1 and later.    
+
 
 Credits
 ~~~~~~~
 We are grateful to Mike Cowlishaw et al. from IBM for making decNumber package
-available.
+available. Mr. Cowlishaw has kindly helped while making QDecimal production 
+ready.
 
 
 In memoriam

@@ -1,10 +1,27 @@
 
+BUILDING
+~~~~~~~~
+
 Unix
 ~~~~
 qmake -r
 make
 
+Use "make distclean" to return to clean state.
+
 Windows
 ~~~~~~~
 qmake -r
 nmake
+
+Use "nmake distclean" to return to clean state.
+
+TESTING
+~~~~~~~
+
+Execute the "qdecimal_test" application in the bin directory.
+To execute the subset of the tests, just run
+"qdecimal_test --test_dir=tc_subset".
+
+Full test would have only 2 expected (fma) failures, whereas subset 
+test should not have any failure.

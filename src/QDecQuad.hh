@@ -27,13 +27,19 @@ class QTextStream;
 QT_END_NAMESPACE
 
 
-/**
- *
- *
+/*!
+  QDecQuad encapsulates decQuad and provides decNumber library functions
+  that operates upon decSingle as member functions with the same name.
+  decimal128 is a 128-bit decimal floating-point representation which
+  provides 34 decimal digits of precision in a compressed format.
+  decQuad module provides the functions for the decimal128 format;
+  this format is an IEEE 754 basic format; it contains the same set of
+  functions as decDouble.
  */
 class QDecQuad
 {
   // MEMBERS
+  //! Embedded decQuad structure
   decQuad m_data;
   
  public:

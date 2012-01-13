@@ -27,13 +27,20 @@ class QTextStream;
 QT_END_NAMESPACE
 
 
-/**
- *
- *
+/*!
+  QDecSingle encapsulates decSingle and provides decNumber
+  library functions that operates upon decSingle as member functions
+  with the same name.
+  decimal32 is a 32-bit decimal floating-point representation which
+  provides 7 decimal digits of precision in a compressed format.
+  decSingle module provides the functions for the decimal32 format;
+  this format is intended for storage and interchange only and so
+  the module provides utilities and conversions but no arithmetic functions.
  */
 class QDecSingle
 {
   // MEMBERS
+  //! Embedded decSingle structure
   decSingle m_data;
 
  public:

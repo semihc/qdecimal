@@ -20,10 +20,23 @@ extern "C" {
 }
 
 
+/*!
+  QDecPacked augments decPacked by encapsulating reference counted byte
+  array and scale of the decimal point as members variables, thus, freeing up
+  user of this class from memory management and keeping track of scale value.
+  The decPacked format is the classic packed decimal format implemented
+  by IBM S/360 and later machines, where each digit is encoded as
+  a 4-bit binary sequence (BCD) and a number is ended by a 4-bit
+  sign indicator. The decPacked module accepts variable lengths,
+  allowing for very large numbers (up to a billion digits), and also
+  allows the specification of a scale.
+ */
 class QDecPacked
 {
   // MEMBERS
+  //! Byte array containing BCD sequence
   QByteArray m_bytes;
+  //! Scale of the decimal number (point)
   int32_t m_scale;
 
  public:
