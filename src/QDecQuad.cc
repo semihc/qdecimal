@@ -24,7 +24,7 @@ QDecQuad& QDecQuad::fromDouble(double d)
 {
   char str[MaxStrSize] = { 0 };
 
-  sprintf(str, "%f", d);
+  snprintf(str, MaxStrSize, "%g", d);
   return fromString(str);
 }
 

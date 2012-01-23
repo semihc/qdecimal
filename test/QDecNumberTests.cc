@@ -1,3 +1,5 @@
+#include <float.h>
+
 #include <QString>
 #include <QStringList>
 #include <QtTest/QtTest>
@@ -306,6 +308,27 @@ void QDecNumberTests::QDecimal_size()
   QVERIFY(sizeof(QDecQuad)==16);
   
 }
+
+
+void QDecNumberTests::regression()
+{
+  { // Issue #1
+    double dmax = DBL_MAX;
+    double dmin = DBL_MIN;
+
+    QDecDouble ddmax(dmax);
+    qDebug() << "dmax=" << dmax << "ddmax=" << ddmax.toString();
+    //QCOMPARE(ddmax.toDouble(), dmax);
+    QVERIFY(1);
+    
+    QDecDouble ddmin(dmin);
+    qDebug() << "dmin=" << dmin << "ddmin=" << ddmin.toString();
+    //QCOMPARE(ddmin.toDouble(), dmin);
+    QVERIFY(1);
+  }
+    
+}
+
 
 //
 //--------------------------------------

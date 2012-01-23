@@ -45,7 +45,7 @@ public:
   // TYPES
   typedef decNumber* decNumberPtr_t;
   enum {
-    MaxStrSize = 256
+    MaxStrSize = QDECMAXSTRSIZE
   };
     
   // CREATORS

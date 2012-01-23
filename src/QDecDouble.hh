@@ -46,7 +46,7 @@ class QDecDouble
   // TYPES
   typedef decDouble* decDoublePtr_t;
   enum {
-    MaxStrSize = 256
+    MaxStrSize = QDECMAXSTRSIZE
   };
 
 

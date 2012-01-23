@@ -47,7 +47,7 @@ class QDecSingle
   // TYPES
   typedef decSingle* decSinglePtr_t;
   enum {
-    MaxStrSize = 256
+    MaxStrSize = QDECMAXSTRSIZE
   };
 
   

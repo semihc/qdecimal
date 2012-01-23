@@ -12,13 +12,19 @@
  *
  */
 
-// Work with up to 80 digits as default, resulting in 64 bytes
-// decNumber structure.
 #ifndef DECNUMDIGITS
+//! Work with up to 80 digits as default, resulting in 64 bytes
+//! decNumber structure.
 # define DECNUMDIGITS 80
 #endif
 
 const int QDecNumDigits = DECNUMDIGITS;
+
+#ifndef QDECMAXSTRSIZE
+//! Maximum length of a conversion string
+# define QDECMAXSTRSIZE 512
+#endif
+
 
 extern "C" {
  #if !defined(int32_t)

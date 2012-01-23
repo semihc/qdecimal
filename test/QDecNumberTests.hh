@@ -44,6 +44,7 @@ class QDecNumberTests: public QObject
   void QDecNumber_abs();
   void QDecNumber_add();
   void QDecimal_size();
+  void regression();
   void test_cases();
 
  private:  
@@ -59,6 +60,7 @@ class QDecNumberTests: public QObject
 
   bool token2QDecNumber(const QString& token, const QDecContext& ctx, QDecNumber& num);
   bool QDecNumber2token(QString& token, const QDecNumber& num);
+
 
   // MEMBERS
   // Current test file

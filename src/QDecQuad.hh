@@ -46,7 +46,7 @@ class QDecQuad
   // TYPES
   typedef decQuad* decQuadPtr_t;
   enum {
-    MaxStrSize = 256
+    MaxStrSize = QDECMAXSTRSIZE
   };
 
   // CREATORS
