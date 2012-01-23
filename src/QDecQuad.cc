@@ -24,7 +24,12 @@ QDecQuad& QDecQuad::fromDouble(double d)
 {
   char str[MaxStrSize] = { 0 };
 
+ #if defined(_MSC_VER)
+  _snprintf(str, MaxStrSize, "%g", d);
+ #else
   snprintf(str, MaxStrSize, "%g", d);
+ #endif
+  
   return fromString(str);
 }
 
