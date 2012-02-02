@@ -18,7 +18,18 @@
 # define DECNUMDIGITS 80
 #endif
 
+//! Digits of decimal precision for QDecNumber, decNumber.
+//! This is set at compile time via DECNUMDIGITS macro.
 const int QDecNumDigits = DECNUMDIGITS;
+
+//! Digits of decimal precision for QDecSingle, decSingle, decimal32
+const int QDecSingleDigits = 7;
+
+//! Digits of decimal precision for QDecDouble, decDouble, decimal64
+const int QDecDoubleDigits = 16;
+
+//! Digits of decimal precision for QDecQuad, decQuad, decimal128
+const int QDecQuadDigits = 34;
 
 #ifndef QDECMAXSTRSIZE
 //! Maximum length of a conversion string

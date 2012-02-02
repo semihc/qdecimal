@@ -64,7 +64,10 @@ class QDecPacked
   const char* data() const
   { return m_bytes.data(); }
 
-  const uint8_t* bytes() const
+  QByteArray bytes() const
+  { return m_bytes; }
+
+  const uint8_t* bytesRaw() const
   { return reinterpret_cast<const uint8_t*>(m_bytes.data()); }
 
   int32_t length() const
@@ -73,10 +76,16 @@ class QDecPacked
   int32_t scale() const
   { return m_scale; }
 
+  QByteArray toString() const;
 
+  
   // MODIFIERS
-  uint8_t* bytes()
+  uint8_t* bytesRaw()
   { return reinterpret_cast<uint8_t*>(m_bytes.data()); }
+
+  QDecPacked& fromDouble(double d);
+
+  QDecPacked& fromString(const char* str);
 
   void setLength(int32_t length)
   { m_bytes.resize(length); }

@@ -44,6 +44,7 @@ class QDecNumberTests: public QObject
   void QDecNumber_abs();
   void QDecNumber_add();
   void QDecimal_size();
+  void conversion();
   void regression();
   void test_cases();
 

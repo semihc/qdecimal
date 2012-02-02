@@ -310,6 +310,158 @@ void QDecNumberTests::QDecimal_size()
 }
 
 
+static void qDebugDouble(const char* label, double d)
+{
+  char bfr[1024];
+  sprintf(bfr,"%.*g",QDecNumDigits, d);
+  qDebug() << label << bfr;
+}
+
+static bool qRealFuzzyCompare(double d1, double d2)
+{
+  double delta = d1-d2;
+  
+  if(delta==0.0) return true;
+  
+  // We want absolute values
+  if(delta < 0) delta *= -1.0;
+
+  double max = (d1 > d2) ? d1 : d2;
+  // 1e-6 is the highest level of error margin
+  if(delta/max > 0.000001)  {
+    qDebug() << "max=" << max
+             << "delta=" << delta
+             << "d/m=" << delta/max
+             << endl;
+    return false; // not equal
+  }
+
+  return true; // equal
+}
+
+void QDecNumber_conv(const char* dblstr)
+{
+  QDecNumber n;
+  QDecContext c(DEC_INIT_DECIMAL128);
+  double d;
+  const char* ns = dblstr; 
+  char bfr[1024];
+
+  qDebug() << endl << "QDecNumber conversion tests using string" << ns;
+  d = strtod(ns,0);
+  qDebugDouble("d=", d);
+  sprintf(bfr,"%.*g",QDecNumDigits, d);
+  qDebug() << "d=" << d << bfr;
+  QCOMPARE(d, atof(ns));
+
+  n.fromString(ns /*,&c*/);
+  qDebug() << "n=" << n.toString() << n.toEngString();
+  if(n.isNaN())
+    return; // Skip rest of the tests
+  qDebug() << "n.toDouble()=" << n.toDouble();
+  qDebug() << "QString(n.toDouble())="
+           << QString::number(n.toDouble(),'g',QDecNumDigits);
+  sprintf(bfr, "%.*g", QDecNumDigits, n.toDouble());
+  qDebug() << "sprintf(n.toDouble())=" << bfr;
+  QCOMPARE(n.toDouble(), d);
+
+  QDecNumber n2;
+  n2.fromDouble(d); 
+  qDebug() << "n2=" << n2.toString();
+  QCOMPARE(d, n2.toDouble());
+}
+
+
+void QDecX_conv(const char* dblstr)
+{
+  QDecSingle qs;
+  QDecDouble qd;
+  QDecQuad   qq;
+  double d;
+  const char* ns = dblstr; 
+
+  qDebug() << endl << "QDecX conversion tests using string" << ns;
+  d = strtod(ns,0);
+  qDebugDouble("d=",d);
+  QCOMPARE(d, atof(ns));
+
+  qs.fromString(ns);
+  qDebug() << "qs.fromString()=" << qs.toString();
+  qs.fromDouble(d);
+  qDebug() << "qs.fromDouble()=" << qs.toString();
+  qDebugDouble("qs.toDouble()=",qs.toDouble());
+  QVERIFY(qRealFuzzyCompare(d, qs.toDouble()));
+
+  qd.fromString(ns);
+  qDebug() << "qd.fromString()=" << qd.toString();
+  qd.fromDouble(d);
+  qDebug() << "qd.fromDouble()=" << qd.toString();
+  qDebugDouble("qd.toDouble()=",qd.toDouble());
+  QVERIFY(qRealFuzzyCompare(d, qd.toDouble()));
+
+  qq.fromString(ns);
+  qDebug() << "qq.fromString()=" << qq.toString();
+  qq.fromDouble(d);
+  qDebug() << "qq.fromDouble()=" << qq.toString();
+  qDebugDouble("qq.toDouble()=",qq.toDouble());
+  QVERIFY(qRealFuzzyCompare(d, qq.toDouble()));
+
+}
+
+void QDecPacked_conv(const char* dblstr)
+{
+  QDecPacked qp;
+  QDecNumber n;
+  double d;
+  const char* ns = dblstr; 
+
+  qDebug() << endl << "QDecPacked conversion tests using string" << ns;
+  d = strtod(ns,0);
+  qDebugDouble("d=",d);
+  QCOMPARE(d, atof(ns));
+
+  n.fromString(ns);
+  if(n.isNaN())
+    return; // Skip rest of the tests
+
+  qp.fromString(ns);
+  qDebug() << "qp.fromString()=" << qp.toString();
+  qDebugDouble("qp...toDouble()=",qp.toQDecNumber().toDouble());
+  QVERIFY(qRealFuzzyCompare(d, qp.toQDecNumber().toDouble()));
+  
+  qp.fromDouble(d);
+  qDebug() << "qp.fromDouble()=" << qp.toString();
+  // fromDouble() is not precise, use the string again
+  qp.fromString(ns);
+  qDebug() << "qp.scale()=" << qp.scale()
+           << "qp.length()=" << qp.length()
+           << "qp.bytes()=" << qp.bytes().toHex();
+  QVERIFY(n == qp.toQDecNumber());
+}
+
+void QDecNumberTests::conversion() 
+{
+  const char* darr[] = {
+    "1", "0.123", "10.0123", "210.01234567",
+    "9876543210.01234567890123456789",
+    "1.01234567890123456789012345678901234567890123456789012345678901234567890123456789",
+    "x.y?",
+    0 
+  };
+
+  int i;
+  for(i=0; darr[i] != 0; ++i) 
+    QDecNumber_conv(darr[i]);
+
+  for(i=0; darr[i] != 0; ++i) 
+    QDecX_conv(darr[i]);
+
+  for(i=0; darr[i] != 0; ++i) 
+    QDecPacked_conv(darr[i]);
+
+}
+
+
 void QDecNumberTests::regression()
 {
   { // Issue #1

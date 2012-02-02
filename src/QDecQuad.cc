@@ -25,9 +25,9 @@ QDecQuad& QDecQuad::fromDouble(double d)
   char str[MaxStrSize] = { 0 };
 
  #if defined(_MSC_VER)
-  _snprintf(str, MaxStrSize, "%g", d);
+  _snprintf(str, MaxStrSize, "%.*g", QDecNumDigits, d);
  #else
-  snprintf(str, MaxStrSize, "%g", d);
+  snprintf(str, MaxStrSize, "%.*g", QDecNumDigits, d);
  #endif
   
   return fromString(str);
@@ -70,7 +70,7 @@ double QDecQuad::toDouble() const
 {
   char str[MaxStrSize] = { 0 };
   decQuadToString(&m_data, str);
-  return atof(str);
+  return strtod(str, 0);
 }
 
 QDecDouble QDecQuad::toQDecDouble(QDecContext* c) const
