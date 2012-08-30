@@ -8,6 +8,7 @@
 
 CONFIG += debug
 
+
 if(win32) {
  INCLUDEPATH += .
  # Remove Qt's defaults

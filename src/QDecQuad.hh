@@ -36,7 +36,7 @@ QT_END_NAMESPACE
   this format is an IEEE 754 basic format; it contains the same set of
   functions as decDouble.
  */
-class QDecQuad
+class QDECIMAL_EXPORT QDecQuad
 {
   // MEMBERS
   //! Embedded decQuad structure
@@ -434,6 +434,7 @@ class QDecQuad
 Q_DECLARE_METATYPE(QDecQuad);
 
 
+QDECIMAL_EXPORT
 QTextStream& operator<<(QTextStream& ts, const QDecQuad& d);
 
 

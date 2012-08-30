@@ -12,6 +12,8 @@
  *
  */
 
+#include <QtCore/QtGlobal>
+
 #ifndef DECNUMDIGITS
 //! Work with up to 80 digits as default, resulting in 64 bytes
 //! decNumber structure.
@@ -54,11 +56,24 @@ extern "C" {
  #include "decNumber.h"
 }
 
-class QDecContext;
-class QDecNumber;
-class QDecPacked;
-class QDecSingle;
-class QDecDouble;
-class QDecQuad;
+// Prepare for shared library usage.
+// See Q_DEC_EXPORT from Qt documentation for details.
+
+#ifdef QDECIMAL_SHARED
+# if(QDECIMAL_SHARED > 1)
+#  define QDECIMAL_EXPORT Q_DECL_EXPORT
+# else
+#  define QDECIMAL_EXPORT Q_DECL_IMPORT
+# endif
+#else
+# define QDECIMAL_EXPORT /* no-op */
+#endif
+
+class QDECIMAL_EXPORT QDecContext;
+class QDECIMAL_EXPORT QDecNumber;
+class QDECIMAL_EXPORT QDecPacked;
+class QDECIMAL_EXPORT QDecSingle;
+class QDECIMAL_EXPORT QDecDouble;
+class QDECIMAL_EXPORT QDecQuad;
 
 #endif /* Include guard */

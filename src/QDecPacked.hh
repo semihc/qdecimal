@@ -31,7 +31,7 @@ extern "C" {
   allowing for very large numbers (up to a billion digits), and also
   allows the specification of a scale.
  */
-class QDecPacked
+class QDECIMAL_EXPORT QDecPacked
 {
   // MEMBERS
   //! Byte array containing BCD sequence

@@ -35,7 +35,7 @@ QT_END_NAMESPACE
   The decNumber representation is variable-length and machine-dependent
   (for example, it contains integers which may be big-endian or little-endian).
  */
-class QDecNumber
+class QDECIMAL_EXPORT QDecNumber
 {
   // MEMBERS
   //! Embedded decNumber structure
@@ -426,6 +426,7 @@ public:
 
 Q_DECLARE_METATYPE(QDecNumber);
 
+QDECIMAL_EXPORT
 QTextStream& operator<<(QTextStream& ts, const QDecNumber& n);
 
 #endif /* Include guard */

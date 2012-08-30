@@ -15,6 +15,8 @@
 extern "C" {
  #include "decContext.h"
 }
+#include "QDecFwd.hh"
+
 
 // FORWARDS
 class QByteArray;
@@ -43,7 +45,7 @@ const int32_t QDecMinExponent  = -999999999;
    exceptional conditions (corresponding to the flags and trap enablers
    in a hardware floating-point implementation).
  */
-class QDecContext
+class QDECIMAL_EXPORT QDecContext
 {
   // MEMBERS
   //! Embedded decContext structure
@@ -237,6 +239,7 @@ class QDecContext
   QTextStream inserter to pretty-print QDecContext objects
   in the debug stream.
  */
+QDECIMAL_EXPORT
 QTextStream& operator<<(QTextStream& ts, const QDecContext);
 
 

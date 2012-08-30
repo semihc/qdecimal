@@ -37,7 +37,7 @@ QT_END_NAMESPACE
   this format is intended for storage and interchange only and so
   the module provides utilities and conversions but no arithmetic functions.
  */
-class QDecSingle
+class QDECIMAL_EXPORT QDecSingle
 {
   // MEMBERS
   //! Embedded decSingle structure
@@ -192,6 +192,7 @@ class QDecSingle
 Q_DECLARE_METATYPE(QDecSingle);
 
 
+QDECIMAL_EXPORT
 QTextStream& operator<<(QTextStream& ts, const QDecSingle& d);
 
 

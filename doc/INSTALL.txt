@@ -27,3 +27,12 @@ To execute the subset of the tests, just run
 
 Full test would have only 2 expected (fma) failures, whereas subset 
 test should not have any failure.
+
+SHARED LIBRARY
+~~~~~~~~~~~~~~
+a) Uncomment the two lines beginning with "CONFIG += shared"
+in src/src.pro file.
+
+b) In the client applications simply define QDECIMAL_SHARED macro;
+that is "DEFINES += QDECIMAL_SHARED"
+

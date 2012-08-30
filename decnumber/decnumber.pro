@@ -5,6 +5,8 @@ include(../common.pri)
 
 QT -= gui
 TEMPLATE = lib
+# decnumber library should always be static
+# regardless Qdecimal is static or dynamic
 CONFIG += static
 DEPENDPATH += .
 TARGET = decnumber
