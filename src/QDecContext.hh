@@ -37,6 +37,7 @@ const int32_t QDecMaxExponent  =  999999999;
 const int32_t QDecMinExponent  = -999999999;
 
 /*!
+  \class QDecContext
    QDecContext encapsulates decContext structure as member and
    exposes free-standing functions as member functions.
    Most functions in the decNumber module take as an argument a

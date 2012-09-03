@@ -449,6 +449,13 @@ void QDecNumberTests::conversion()
     0 
   };
 
+  /*
+  QDecNumber n;
+  n.fromString("1.125");
+  qDebug() << n.toDouble();
+  return;
+  */
+
   int i;
   for(i=0; darr[i] != 0; ++i) 
     QDecNumber_conv(darr[i]);

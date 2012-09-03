@@ -11,7 +11,7 @@ CONFIG += static
 # or dynamic (don't forget to define QDECIMAL_SHARED
 #CONFIG += shared
 #DEFINES += QDECIMAL_SHARED=2
-# 1=import, client app, 2=export, source shared library 
+# 1=import, client app, 2=export, source shared library (here)
 
 
 TARGET = qdecimal

@@ -28,6 +28,7 @@ QT_END_NAMESPACE
 
 
 /*!
+  \class QDecQuad
   QDecQuad encapsulates decQuad and provides decNumber library functions
   that operates upon decSingle as member functions with the same name.
   decimal128 is a 128-bit decimal floating-point representation which

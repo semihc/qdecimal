@@ -28,6 +28,7 @@ QT_END_NAMESPACE
 
 
 /*!
+  \class QDecSingle
   QDecSingle encapsulates decSingle and provides decNumber
   library functions that operates upon decSingle as member functions
   with the same name.

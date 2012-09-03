@@ -21,6 +21,7 @@ extern "C" {
 
 
 /*!
+  \class QDecPacked
   QDecPacked augments decPacked by encapsulating reference counted byte
   array and scale of the decimal point as members variables, thus, freeing up
   user of this class from memory management and keeping track of scale value.

@@ -25,6 +25,7 @@ QT_END_NAMESPACE
 
 
 /*!
+  \class QDecNumber
   QDecNumber encapsulates decNumber and reimplements global functions
   that operates upon decNumber as member functions with the same name.
   decNumber module uses an arbitrary-precision decimal number representation

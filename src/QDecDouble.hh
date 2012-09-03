@@ -28,6 +28,7 @@ QT_END_NAMESPACE
 
 
 /*!
+  \class QDecDouble
   QDecDouble encapsulates decDouble and provides decNumber library
   functions that operates upon decSingle as member functions with the same name.
   decimal64 is a 64-bit decimal floating-point representation which
