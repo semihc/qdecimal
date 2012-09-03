@@ -30,9 +30,12 @@ test should not have any failure.
 
 SHARED LIBRARY
 ~~~~~~~~~~~~~~
-a) Uncomment the two lines beginning with "CONFIG += shared"
+a) Command "CONFIG += static" line and uncomment the two lines 
+beginning with "CONFIG += shared"
 in src/src.pro file.
 
 b) In the client applications simply define QDECIMAL_SHARED macro;
 that is "DEFINES += QDECIMAL_SHARED"
 
+c) At run-time PATH (Windows) or LD_LIBRARY_PATH (Unix) environment
+variables should be specified to locate the shared library.
