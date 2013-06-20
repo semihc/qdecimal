@@ -79,7 +79,7 @@ Read INSTALL.txt to build and install QDecimal.
 
 Copyright
 ~~~~~~~~~
-Copyright (C) 2012 Semih Cemiloglu
+Copyright (C) 2012-2013 Semih Cemiloglu
 Copyright (c) IBM Corporation, 2000, 2010.  All rights reserved.
 
 This library is free software; you can redistribute it and/or

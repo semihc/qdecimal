@@ -5,7 +5,7 @@ include(../common.pri)
 
 QT -= gui
 TEMPLATE = app
-CONFIG  += qtestlib 
+QT  += testlib 
 
 TARGET = qdecimal_test
 DESTDIR = ../bin

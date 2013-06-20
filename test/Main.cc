@@ -12,20 +12,23 @@
 
 
 
-void MessageOutput(QtMsgType type, const char *msg)
+void MessageOutput(QtMsgType type, const QMessageLogContext &context,
+                     const QString &msg)
 {
+  QByteArray lmsg = msg.toLocal8Bit();
+  const char* cmsg = lmsg.constData();
   switch (type) {
     case QtDebugMsg:
-      fprintf(stderr, "%s\n", msg);
+      fprintf(stderr, "%s\n", cmsg);
       break;
     case QtWarningMsg:
-      fprintf(stderr, "Warn: %s\n", msg);
+      fprintf(stderr, "Warn: %s\n", cmsg);
       break;
     case QtCriticalMsg:
-      fprintf(stderr, "Critical: %s\n", msg);
+      fprintf(stderr, "Critical: %s\n", cmsg);
       break;
     case QtFatalMsg:
-      fprintf(stderr, "Fatal: %s\n", msg);
+      fprintf(stderr, "Fatal: %s\n", cmsg);
       abort();
   }
 }
@@ -36,7 +39,7 @@ void MessageOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char* argv[])
 {
-  qInstallMsgHandler(MessageOutput);
+  qInstallMessageHandler(MessageOutput);
   QCoreApplication app(argc, argv);
   QStringList args = QCoreApplication::arguments();
 

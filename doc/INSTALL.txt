@@ -20,22 +20,25 @@ Use "nmake distclean" to return to clean state.
 
 TESTING
 ~~~~~~~
+Execute the "qdecimal_test" application in the bin directory, ie. "cd bin".
 
-Execute the "qdecimal_test" application in the bin directory.
 To execute the subset of the tests, just run
-"qdecimal_test --test_dir=tc_subset".
+"qdecimal_test --testdir=tc_subset".
+
+To execute the full set of the tests, just run
+"qdecimal_test --testdir=tc_full".
 
 Full test would have only 2 expected (fma) failures, whereas subset 
-test should not have any failure.
+test should not have any failure (grep -i fail / grep PASS).
 
 SHARED LIBRARY
 ~~~~~~~~~~~~~~
-a) Command "CONFIG += static" line and uncomment the two lines 
+a) Comment "CONFIG += static" line and uncomment the two lines 
 beginning with "CONFIG += shared"
 in src/src.pro file.
 
-b) In the client applications simply define QDECIMAL_SHARED macro;
-that is "DEFINES += QDECIMAL_SHARED"
+b) In the client applications simply define QDECIMAL_SHARED macro as 1;
+that is "DEFINES += QDECIMAL_SHARED=1"
 
-c) At run-time PATH (Windows) or LD_LIBRARY_PATH (Unix) environment
+c) At run-time, PATH (Windows) or LD_LIBRARY_PATH (Unix) environment
 variables should be specified to locate the shared library.

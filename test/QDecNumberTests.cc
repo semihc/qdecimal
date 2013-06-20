@@ -1113,7 +1113,7 @@ int QDecNumberTests::opTest(const QStringList& tokens)
     qDebug() << "n1=" << n1.toString().data()
              << "n2=" << n2.toString().data()
              << "r="
-             << (is_rs_used ? rs.toAscii().data() : r.toString().data())
+             << (is_rs_used ? rs.toLocal8Bit().data() : r.toString().data())
              << "e=" << e.toString().data()
              << "prc=" << oc.digits()
              << "ctx=" << (oc.status() ? oc.statusToString() : 0)
@@ -1127,7 +1127,7 @@ int QDecNumberTests::opTest(const QStringList& tokens)
              << "n2=" << n2.toString().data()
              << "n3=" << n3.toString().data()
              << "r="
-             << (is_rs_used ? rs.toAscii().data() : r.toString().data())
+             << (is_rs_used ? rs.toLocal8Bit().data() : r.toString().data())
              << "e=" << e.toString().data()
              << "prc=" << oc.digits()
              << "ctx=" << (oc.status() ? oc.statusToString() : 0)
@@ -1194,19 +1194,19 @@ bool QDecNumberTests::token2QDecNumber(const QString& token, const QDecContext& 
       switch(hexval.size()) {
         case 8: {
           QDecSingle ds;
-          ds.fromHexString(hexval.toAscii().data());
+          ds.fromHexString(hexval.toLocal8Bit().data());
           num = ds.toQDecNumber();
           return true;
           }      
         case 16: {
           QDecDouble dd;
-          dd.fromHexString(hexval.toAscii().data());
+          dd.fromHexString(hexval.toLocal8Bit().data());
           num = dd.toQDecNumber();
           return true;
         }
         case 32: {
           QDecQuad dq;
-          dq.fromHexString(hexval.toAscii().data());
+          dq.fromHexString(hexval.toLocal8Bit().data());
           num = dq.toQDecNumber();
           return true;
         }
@@ -1221,21 +1221,21 @@ bool QDecNumberTests::token2QDecNumber(const QString& token, const QDecContext& 
       switch(fmtsize) {
         case 32: {
           qDebug() << "fmt=" << fmt << "val=" << val;
-          QDecSingle ds(val.toAscii().data());
+          QDecSingle ds(val.toLocal8Bit().data());
           num = ds.toQDecNumber();
           return true;
         }
 
         case 64: {
           qDebug() << "fmt=" << fmt << "val=" << val;
-          QDecDouble dd(val.toAscii().data());
+          QDecDouble dd(val.toLocal8Bit().data());
           num = dd.toQDecNumber();
           return true;
         }
 
         case 128: {
           qDebug() << "fmt=" << fmt << "val=" << val;
-          QDecQuad dq(val.toAscii().data());
+          QDecQuad dq(val.toLocal8Bit().data());
           num = dq.toQDecNumber();
           return true;
         }
@@ -1255,7 +1255,7 @@ bool QDecNumberTests::token2QDecNumber(const QString& token, const QDecContext& 
   QDecContext c(ctx);
 
   QDecNumber tnum;
-  tnum.fromString(tt.toAscii().data(), &c);
+  tnum.fromString(tt.toLocal8Bit().data(), &c);
   num = tnum;
 
   //TODO: Check if warning is necessary
@@ -1312,7 +1312,7 @@ void QDecNumberTests::test_cases()
     }
 
     dir.setFilter(QDir::Files);
-    qDebug() << "testfilefilter=" << tffilter.toAscii();      
+    qDebug() << "testfilefilter=" << tffilter.toLocal8Bit();      
     if(tffilter.size()) {
       QStringList filters;
       filters << tffilter;
@@ -1332,10 +1332,10 @@ void QDecNumberTests::test_cases()
     for(i = 0; i < list.size(); ++i) {
       // Skip test file is wanted and don't match with current file name
       if(tfile.size() && tfile!=list[i]) {
-        qWarning() << "Skipping " << list[i].toAscii();
+        qWarning() << "Skipping " << list[i].toLocal8Bit();
         continue;
       }
-      qDebug() << list[i].toAscii();      
+      qDebug() << list[i].toLocal8Bit();      
       procTestFile(tdir + "/" + list[i]);
     }
     */

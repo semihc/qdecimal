@@ -19,8 +19,10 @@ if(win32) {
  # Are we in debug mode?
  debug {
    # Use iterator debugging
-   DEFINES *= _SECURE_SCL=1
-   DEFINES *= _SECURE_SCL_THROWS=1
+   #DEFINES *= _SECURE_SCL=1
+   #DEFINES *= _SECURE_SCL_THROWS=1
+   #msvc2010 onwards above flags are deprecated.	
+
    # Use Run-time checks for stack corruption and uninitialized var use
    QMAKE_CXXFLAGS += /RTC1
  }
