@@ -7,9 +7,9 @@ import sys
 # Default is the release
 mode = ARGUMENTS.get('mode','debug')
 
-allowed_modes = ['debug', 'release']
-if not (mode in allowed_modes):
-    print "Error: Expected %s, found %s: " % (allowed_modes, mode)
+allowed_modes = {'debug':'dbg', 'release':'rel'}
+if not (mode in allowed_modes.keys()):
+    print "Error: Expected %s, found %s: " % (allowed_modes.keys(), mode)
     Exit(1)
 
 print "Will build for %s mode..." % mode
@@ -63,36 +63,60 @@ env.AppendUnique(
 
 
 
-
-def detectLatestQtDir():
-    return "Q:/Qt/5.5.1"
-
 # Detect Qt version
-qtdir = detectLatestQtDir()
+def detectLatestQtDir():
+    qtdir = os.environ.get('QT5DIR',None)
+    if qtdir:
+        return qtdir
+    qtdir = os.environ.get('QTDIR',None)
+    if qtdir:
+        return qtdir
+
+    # Put sensible defaults for your environment
+    if sys.platform.startswith('win'):
+        return 'Q:/Qt/5.5.1'
+    elif sys.platform.statswith('linux'):
+        return '/home/semih/Qt/5.5.1'
+    else:
+        return None
+    
 
 # Create base environment
 #baseEnv = Environment(MSVC_VERSION='11.0', TARGET_ARCH='x86')
 #...further customization of base env
+qtdir = detectLatestQtDir()
 
 # Clone Qt environment
 qtEnv = env.Clone()
 # Set QT5DIR
 qtEnv['QT5DIR'] = qtdir
+qtEnv['ENV']['PKG_CONFIG_PATH'] = os.path.join(qtdir, 'lib/pkgconfig')
 # Add qt5 tool
 qtEnv.Tool('qt5')
 #...further customization of qt env
 
 
-# Your other stuff...
-# ...including the call to your SConscripts
-qtEnv.AppendUnique(CPPPATH = ['#', '.'])
-qtEnv.AppendUnique(CCFLAGS = [ '-MT', '-EHsc', '-Zc:wchar_t', '-Zc:forScope' ])
-qtEnv.AppendUnique(CPPDEFINES = ['UNICODE', 'WIN32', '_CRT_SECURE_NO_WARNINGS'])
-#qtEnv.AppendUnique(LINKFLAGS = ['-verbose:lib', '-machine:X86'])
-
-#qtEnv['CCFLAGS'].remove('/nologo')
-#qtEnv['LINKFLAGS'].remove('/nologo')
-#qtEnv['ARFLAGS'].remove('/nologo')
+if platform == 'win32':
+    if 'cl' in env['CC']:
+        qtEnv.AppendUnique(CPPPATH = ['#', '.'])
+        qtEnv.AppendUnique(CCFLAGS = [ '-MT', '-EHsc', '-Zc:wchar_t', '-Zc:forScope' ])
+        qtEnv.AppendUnique(CPPDEFINES = ['UNICODE', 'WIN32', '_CRT_SECURE_NO_WARNINGS'])
+        #qtEnv.AppendUnique(LINKFLAGS = ['-verbose:lib', '-machine:X86'])
+        #qtEnv['CCFLAGS'].remove('/nologo')
+        #qtEnv['LINKFLAGS'].remove('/nologo')
+        #qtEnv['ARFLAGS'].remove('/nologo')
+    else:
+        print "Unrecognized compiler: %s" % env['CC']
+        Exit(1)
+elif 'linux' in platform:
+    qtEnv.AppendUnique(CCFLAGS = ['-fPIC','-DPIC'])        
+    if mode == 'debug':
+        qtEnv.MergeFlags('-g')
+    else:
+        qtEnv.MergeFlags('-O2 -w')
+else:
+    print "Unrecognized platform: %s" % platform
+    Exit(1)
 
 
 # Normally in SConscript files

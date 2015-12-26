@@ -4,8 +4,8 @@ Import('*')
 qtEnv.AppendUnique(CPPPATH = ['#/test', '#/src'])
 
 qd_libs = [
-    qtEnv['PRJ_LIBS']['decnumber'],
-    qtEnv['PRJ_LIBS']['qdecimal']
+    qtEnv['PRJ_LIBS']['qdecimal'],
+    qtEnv['PRJ_LIBS']['decnumber']
 ]
 qtEnv.AppendUnique(LIBS = qd_libs)
 
