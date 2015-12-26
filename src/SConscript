@@ -1,0 +1,7 @@
+Import('*')
+
+qtEnv.AppendUnique(CPPPATH = ['#/decnumber'])
+
+lib = qtEnv.Library('qdecimal', Glob('*.cc'))
+
+qtEnv['PRJ_LIBS']['qdecimal'] = lib

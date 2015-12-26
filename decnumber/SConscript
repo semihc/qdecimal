@@ -1,0 +1,11 @@
+Import('*')
+
+srcs = Split('decContext.c decDouble.c decimal128.c decimal32.c decimal64.c decNumber.c decPacked.c decQuad.c decSingle.c')
+
+lib = qtEnv.StaticLibrary('decnumber', srcs)
+
+qtEnv['PRJ_LIBS']['decnumber'] = lib
+
+
+
+
