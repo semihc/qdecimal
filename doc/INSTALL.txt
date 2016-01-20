@@ -1,6 +1,17 @@
 
 BUILDING
 ~~~~~~~~
+We now have two options to build QDecimal project.
+A) SCons based build
+B) Qmake/Make based build.
+
+SCons is now the preferred method of building.
+just type "scons" at the project root to build. type scons -h or -H to
+see full options for build.
+
+
+Qmake/Make based build is now deprecated, please use it as a last resort as
+it will be discontinued near future:
 
 Unix
 ~~~~
