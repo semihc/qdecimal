@@ -1,6 +1,6 @@
 Import('*')
 
-env.AppendUnique(CPPPATH = ['#/test', '#/src', '#/abuzer'])
+env.AppendUnique(CPPPATH = ['#/test', '#/src'])
 
 qd_libs = [
     env['PRJ_LIBS']['qdecimal'],
