@@ -1,15 +1,14 @@
 Import('*')
 
-
-qtEnv.AppendUnique(CPPPATH = ['#/test', '#/src'])
+env.AppendUnique(CPPPATH = ['#/test', '#/src', '#/abuzer'])
 
 qd_libs = [
-    qtEnv['PRJ_LIBS']['qdecimal'],
-    qtEnv['PRJ_LIBS']['decnumber']
+    env['PRJ_LIBS']['qdecimal'],
+    env['PRJ_LIBS']['decnumber']
 ]
-qtEnv.AppendUnique(LIBS = qd_libs)
+env.AppendUnique(LIBS = qd_libs)
 
 
-exe = qtEnv.Program('qdecimal_test', Glob('*.cc'))
+exe = env.Program('qdecimal_test', Glob('*.cc'))
 
-qtEnv['PRJ_EXES']['qdecimal_test'] = exe
+env['PRJ_TSTS']['qdecimal_test'] = exe
