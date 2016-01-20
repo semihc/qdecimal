@@ -32,7 +32,7 @@ env.SetOption('implicit_cache', 1)
 # Identify Qt location
 if sys.platform.startswith('win'):
     qtdir = SConsLib.findQtDir('Q:/Qt/5.5.1')
-elif sys.platform.statswith('linux'):
+elif sys.platform.startswith('linux'):
     qtdir = SConsLib.findQtDir('/home/semih/Qt/5.5.1')
 
 # Set QT5DIR

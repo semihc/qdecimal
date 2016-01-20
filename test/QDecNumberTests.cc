@@ -1294,7 +1294,7 @@ void QDecNumberTests::test_cases()
   m_skipSet << "basx716" << "basx720" << "basx724" << "basx744";
   
   QString cwd = QDir::currentPath() ;
-  QString prjdir = cwd + "/../test/";
+  QString prjdir = cwd + "/test/";
   // Check if user specified a test case directory
   QString tdir = m_argsMap.value("testdir",
                                  //"tc_subset");
