@@ -1294,7 +1294,14 @@ void QDecNumberTests::test_cases()
   m_skipSet << "basx716" << "basx720" << "basx724" << "basx744";
   
   QString cwd = QDir::currentPath() ;
-  QString prjdir = cwd + "/test/";
+  // Assume test application is run from cwd
+  QString prjdir = cwd + "/../../../../test/";
+  QDir pdir(prjdir);
+  // If not, assume it's called from project root directory
+  if(!pdir.exists()) {
+    prjdir = cwd + "/test/";
+  }
+      
   // Check if user specified a test case directory
   QString tdir = m_argsMap.value("testdir",
                                  //"tc_subset");
