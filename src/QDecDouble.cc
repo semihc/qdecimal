@@ -28,7 +28,7 @@ QDecDouble& QDecDouble::fromDouble(double d)
  #if defined(_MSC_VER)
   _snprintf(str, MaxStrSize, "%.*g", QDecNumDigits, d);
  #else
-  snprintf(str, MaxStrSize, "%.*g", QDecNumDigits, d);
+  snprintf(str, MaxStrSize, "%s", qPrintable(QString::number(d, 'g', QDecDoubleDigits)));
  #endif
 
   return fromString(str);
