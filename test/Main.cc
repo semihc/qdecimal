@@ -1,3 +1,4 @@
+#include <QRegExp>
 #include <QtTest/QtTest>
 
 #include "QDecNumberTests.hh"

@@ -159,6 +159,7 @@ http://speleotrove.com/decimal/decnumber.html
 http://speleotrove.com/decimal
 
 [4] QDecimal Project Home
+https://github.com/semihc/qdecimal
 http://code.google.com/p/qdecimal
 
 

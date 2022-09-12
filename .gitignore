@@ -1,0 +1,10 @@
+# CMake related
+CMakeFiles/
+
+# Common build directories
+build*/
+bld*/
+
+# Visual Studio Code
+.vscode/
+.cache/

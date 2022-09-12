@@ -1,7 +1,10 @@
 #include <float.h>
 
+#include <QtGlobal>
+#include <QtDebug>
 #include <QString>
 #include <QStringList>
+#include <QRegExp>
 #include <QtTest/QtTest>
 
 #include "QDecContext.hh"
@@ -19,7 +22,7 @@ extern "C" {
 }
 
 #include <iostream>
-using namespace std;
+//-using namespace std;
 
 #include "QDecNumberTests.hh"
 
@@ -31,6 +34,9 @@ using namespace std;
 #elif defined(_WIN32)
 # pragma comment( user, __FILE__ " " __DATE__ " " __TIME__ "$Id$" )
 #endif
+
+
+static char endl = '\n';
 
 
 QDebug operator<<(QDebug dbg, const QDecContext& c)
@@ -329,10 +335,10 @@ static bool qRealFuzzyCompare(double d1, double d2)
   double max = (d1 > d2) ? d1 : d2;
   // 1e-6 is the highest level of error margin
   if(delta/max > 0.000001)  {
-    qDebug() << "max=" << max
-             << "delta=" << delta
-             << "d/m=" << delta/max
-             << endl;
+	qDebug() << "max=" << max  << "delta=" << delta << "d/m=" << delta/max << '\n';
+    //-qDebug() << "max=" << max  << "delta=" << delta << "d/m=" << delta/max << endl;
+
+
     return false; // not equal
   }
 
@@ -346,8 +352,10 @@ void QDecNumber_conv(const char* dblstr)
   double d;
   const char* ns = dblstr; 
   char bfr[1024];
+  
 
-  qDebug() << endl << "QDecNumber conversion tests using string" << ns;
+  //-qDebug() << endl << "QDecNumber conversion tests using string" << ns;
+  qDebug() << '\n' << "QDecNumber conversion tests using string" << ns;
   d = strtod(ns,0);
   qDebugDouble("d=", d);
   sprintf(bfr,"%.*g",QDecNumDigits, d);
@@ -1306,7 +1314,8 @@ void QDecNumberTests::test_cases()
   QString tdir = m_argsMap.value("testdir",
                                  //"tc_subset");
                                  "tc_full"); 
-  tdir = prjdir + tdir;
+  //Needed to remove for Cmake
+  //-tdir = prjdir + tdir;
   QString tfile = m_argsMap.value("testfile");
   QString tffilter = m_argsMap.value("testfilefilter");
   

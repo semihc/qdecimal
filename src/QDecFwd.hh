@@ -12,7 +12,7 @@
  *
  */
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 #ifndef DECNUMDIGITS
 //! Work with up to 80 digits as default, resulting in 64 bytes

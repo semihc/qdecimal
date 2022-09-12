@@ -11,6 +11,7 @@
 
 #include "QDecContext.hh"
 //include <sstream>
+#include <ios>
 #include <QtGlobal>
 #include <QByteArray>
 #include <QTextStream>
@@ -86,7 +87,7 @@ QByteArray QDecContext::statusFlags() const
   if(0==status)
     os << DEC_Condition_ZE << sep;
   
-  os << "0x" << hex << status;
+  os << "0x" << ios::hex << status;
 
   os.flush();
     //return os.str().c_str();
