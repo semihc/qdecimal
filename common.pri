@@ -11,22 +11,6 @@ CONFIG += debug
 
 if(win32) {
  INCLUDEPATH += .
- # Remove Qt's defaults
- QMAKE_CXXFLAGS -= -Zc:wchar_t-
- # Add our defaults
- QMAKE_CXXFLAGS += /Zc:forScope /Zc:wchar_t
- DEFINES *= _CRT_SECURE_NO_WARNINGS
- # Are we in debug mode?
- debug {
-   # Use iterator debugging
-   #DEFINES *= _SECURE_SCL=1
-   #DEFINES *= _SECURE_SCL_THROWS=1
-   #msvc2010 onwards above flags are deprecated.	
-
-   # Use Run-time checks for stack corruption and uninitialized var use
-   QMAKE_CXXFLAGS += /RTC1
- }
-
 } # end win32
 else {
  MOC_DIR = moc

@@ -25,7 +25,7 @@ class QDecNumberTests: public QObject
 
   // CREATORS
   QDecNumberTests(const QStringList& arguments);
-  
+
   enum TestCodes_e {
     TC_ignore = 0,
     TC_comment,

@@ -5,8 +5,8 @@ qt_add_executable(qdecimal_test
 target_include_directories(qdecimal_test PUBLIC . ../decnumber ../src)
 target_link_libraries(qdecimal_test 
  PRIVATE 
-  decnumber
   qdecimal
+  decnumber  
   Qt6::Core 
   Qt6::Core5Compat
   Qt6::Test
